@@ -238,5 +238,4 @@ The interface follows a clean, refined aesthetic — not generic SaaS, not neobr
 ---
 
 ## License
-
 MIT
