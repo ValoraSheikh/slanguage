@@ -35,11 +35,20 @@ export async function generateMetadata({
       description: term.shortDefinition,
       type: "article",
       url: `${getSiteUrl()}/terms/${term.slug}`,
+      images: [
+        {
+          url: `${getSiteUrl()}/api/og?slug=${term.slug}`,
+          width: 1200,
+          height: 630,
+          alt: `${term.term} — ${term.shortDefinition}`,
+        },
+      ],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: `What does "${term.term}" mean?`,
       description: term.shortDefinition,
+      images: [`${getSiteUrl()}/api/og?slug=${term.slug}`],
     },
   };
 }

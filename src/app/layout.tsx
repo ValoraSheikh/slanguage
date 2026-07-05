@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
 
@@ -42,12 +43,21 @@ export const metadata: Metadata = {
       "Decode Gen Z slang, brainrot, and internet lingo without sounding like a brand account.",
     type: "website",
     url: siteUrl,
+    images: [
+      {
+        url: `${siteUrl}/api/og`,
+        width: 1200,
+        height: 630,
+        alt: "Slanguage — Gen Z Slang Field Guide",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Slanguage — Gen Z Slang Field Guide",
     description:
       "Decode Gen Z slang, brainrot, and internet lingo without sounding like a brand account.",
+    images: [`${siteUrl}/api/og`],
   },
 };
 
@@ -72,6 +82,7 @@ export default function RootLayout({
           <main>{children}</main>
           <SiteFooter />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
