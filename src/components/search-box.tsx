@@ -14,20 +14,40 @@ import {
 } from "@hugeicons/core-free-icons";
 
 import { StatusBadge } from "@/components/status-badge";
-import { Input } from "@/components/ui/input";
 import type { TermDTO } from "@/types/slang";
 
 type PlaceholderConfig = {
   id: number;
   placeholder: string;
   icon: typeof Search01Icon;
+  hint: string;
 };
 
 const placeholderOptions: PlaceholderConfig[] = [
-  { id: 1, placeholder: "Search slang, meanings, acronyms...", icon: Search01Icon },
-  { id: 2, placeholder: "Decode rizz, delulu, iykyk...", icon: SparklesIcon },
-  { id: 3, placeholder: "Find dating, meme, Discord slang...", icon: Album02Icon },
-  { id: 4, placeholder: "Check if a word is already cooked...", icon: SparklesIcon },
+  {
+    id: 1,
+    placeholder: "Search slang, meanings, acronyms...",
+    icon: Search01Icon,
+    hint: "Try rizz, delulu, brainrot, or any word you heard and panicked.",
+  },
+  {
+    id: 2,
+    placeholder: "Decode rizz, delulu, iykyk...",
+    icon: SparklesIcon,
+    hint: "Type what you think it means — we'll find the match.",
+  },
+  {
+    id: 3,
+    placeholder: "Find dating, meme, Discord slang...",
+    icon: Album02Icon,
+    hint: "Search by meaning if you only remember the vibe.",
+  },
+  {
+    id: 4,
+    placeholder: "Check if a word is already cooked...",
+    icon: SparklesIcon,
+    hint: "Type a word to see if it's current, fading, or already dead.",
+  },
 ];
 
 function AnimatedPlaceholder({ text }: { text: string }) {
@@ -69,6 +89,8 @@ export function SearchBox({
   const [query, setQuery] = useState(defaultValue);
   const [results, setResults] = useState<TermDTO[]>([]);
   const [open, setOpen] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const currentConfig = placeholderOptions[activeIndex];
 
@@ -76,6 +98,7 @@ export function SearchBox({
     const onClick = (event: MouseEvent) => {
       if (!wrapperRef.current?.contains(event.target as Node)) {
         setOpen(false);
+        setFocused(false);
       }
     };
     document.addEventListener("mousedown", onClick);
@@ -105,6 +128,7 @@ export function SearchBox({
       trimmed ? `/terms?query=${encodeURIComponent(trimmed)}` : "/terms",
     );
     setOpen(false);
+    setFocused(false);
   }
 
   const suggestions = query.trim().length >= 2 ? results : [];
@@ -115,7 +139,11 @@ export function SearchBox({
       <motion.div
         layout
         transition={{ type: "spring", damping: 24, stiffness: 300, mass: 0.9 }}
-        className="bg-muted w-full flex items-center rounded-full px-1 py-1 border border-border/50"
+        className={`bg-background w-full flex items-center rounded-2xl px-1 py-1 ring-1 transition-all duration-300 ${
+          focused
+            ? "ring-2 ring-primary/20 shadow-lg shadow-primary/5"
+            : "ring-border hover:ring-border/80 hover:shadow-sm"
+        }`}
       >
         <motion.button
           type="button"
@@ -123,8 +151,8 @@ export function SearchBox({
           onClick={() =>
             setActiveIndex((prev) => (prev + 1) % placeholderOptions.length)
           }
-          whileTap={{ scale: 0.92 }}
-          className="bg-background p-2.5 px-2.5 rounded-full flex items-center justify-center gap-1.5 transition-colors overflow-hidden cursor-pointer shadow-sm shrink-0"
+          whileTap={{ scale: 0.9 }}
+          className="bg-muted p-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-colors overflow-hidden cursor-pointer shrink-0"
         >
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.div
@@ -135,45 +163,80 @@ export function SearchBox({
               transition={{ ease: "easeInOut", duration: 0.35 }}
               className="flex items-center justify-center gap-1"
             >
-              <HugeiconsIcon icon={IconComponent} className="w-5 h-5 text-foreground" />
+              <HugeiconsIcon
+                icon={IconComponent}
+                className="w-5 h-5 text-foreground"
+              />
             </motion.div>
           </AnimatePresence>
-          <HugeiconsIcon icon={UnfoldMoreIcon} className="w-3 h-3 text-muted-foreground" />
+          <HugeiconsIcon
+            icon={UnfoldMoreIcon}
+            className="w-3 h-3 text-muted-foreground"
+          />
         </motion.button>
 
         <div className="flex-1 relative min-w-0">
           {!query ? (
-            <div className="absolute left-0 top-0 w-full h-full flex items-center pointer-events-none pl-1.5 bg-transparent overflow-hidden">
+            <div className="absolute left-0 top-0 w-full h-full flex items-center pointer-events-none pl-2 bg-transparent overflow-hidden">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.div
                   key={currentConfig.id}
-                  className={large ? "text-base md:text-lg" : "text-sm"}
+                  className={
+                    large
+                      ? "text-base md:text-lg text-muted-foreground/60"
+                      : "text-sm text-muted-foreground/60"
+                  }
                 >
                   <AnimatedPlaceholder text={currentConfig.placeholder} />
                 </motion.div>
               </AnimatePresence>
             </div>
           ) : null}
-          <Input
+          <input
+            ref={inputRef}
             type="text"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            onFocus={() => suggestions.length && setOpen(true)}
+            onFocus={() => {
+              setFocused(true);
+              if (suggestions.length) setOpen(true);
+            }}
             onKeyDown={(event) => {
               if (event.key === "Enter") submitSearch();
+              if (event.key === "Escape") {
+                setOpen(false);
+                setFocused(false);
+                inputRef.current?.blur();
+              }
             }}
-            className={`border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 ${!query ? "caret-transparent" : ""} ${large ? "h-14 text-base md:text-lg" : "h-10"}`}
+            className={`w-full border-0 bg-transparent shadow-none outline-none pl-2 ${
+              !query ? "caret-transparent" : ""
+            } ${large ? "h-14 text-base md:text-lg" : "h-10 text-sm"}`}
           />
         </div>
 
         <button
           type="button"
           onClick={submitSearch}
-          className="bg-background py-2.5 px-3 rounded-full flex shadow-sm items-center justify-center shrink-0 cursor-pointer active:scale-95 transition-transform"
+          className="bg-foreground text-background py-2 px-4 rounded-xl flex items-center justify-center shrink-0 cursor-pointer active:scale-95 transition-transform hover:bg-foreground/90"
         >
-          <HugeiconsIcon icon={ArrowRight02Icon} className="h-4 w-4 text-foreground" />
+          <HugeiconsIcon icon={ArrowRight02Icon} className="h-4 w-4" />
         </button>
       </motion.div>
+
+      <AnimatePresence>
+        {focused && !query ? (
+          <motion.p
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.2 }}
+            className="mt-2 px-1 text-xs text-muted-foreground/70"
+          >
+            {currentConfig.hint}
+          </motion.p>
+        ) : null}
+      </AnimatePresence>
 
       {open && suggestions.length > 0 ? (
         <motion.div
@@ -186,7 +249,10 @@ export function SearchBox({
             <Link
               key={term.slug}
               href={`/terms/${term.slug}`}
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                setOpen(false);
+                setFocused(false);
+              }}
               className="flex items-center justify-between gap-4 border-b border-border/50 p-4 last:border-b-0 hover:bg-muted/50 transition-colors"
             >
               <div>
