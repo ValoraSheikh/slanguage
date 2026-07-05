@@ -34,7 +34,9 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <ThemeToggle />
+          <span className="md:hidden">
+            <ThemeToggle />
+          </span>
           <Button asChild size="sm" className="hidden sm:inline-flex">
             <Link href="/submit">Submit slang</Link>
           </Button>
