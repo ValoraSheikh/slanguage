@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { generateWebSiteStructuredData } from "@/lib/structured-data";
+import { getSiteUrl } from "@/lib/site-url";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,6 +18,8 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: {
@@ -32,12 +35,13 @@ export const metadata: Metadata = {
     "brainrot",
     "TikTok slang",
   ],
-  metadataBase: new URL("https://slanguage.local"),
+  metadataBase: new URL(siteUrl),
   openGraph: {
     title: "Slanguage",
     description:
       "Decode Gen Z slang, brainrot, and internet lingo without sounding like a brand account.",
     type: "website",
+    url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",
@@ -56,7 +60,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateWebSiteStructuredData()),
+            __html: JSON.stringify(generateWebSiteStructuredData(siteUrl)),
           }}
         />
       </head>

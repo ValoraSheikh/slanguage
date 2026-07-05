@@ -1,6 +1,10 @@
 import type { TermDTO } from "@/types/slang";
 
-export function generateTermStructuredData(term: TermDTO, url: string) {
+export function generateTermStructuredData(
+  term: TermDTO,
+  termUrl: string,
+  siteUrl: string,
+) {
   return {
     "@context": "https://schema.org",
     "@type": "DefinedTerm",
@@ -10,9 +14,9 @@ export function generateTermStructuredData(term: TermDTO, url: string) {
     inDefinedTermSet: {
       "@type": "DefinedTermSet",
       name: "Slanguage — Gen Z Slang Field Guide",
-      url: "https://slanguage.local",
+      url: siteUrl,
     },
-    url,
+    url: termUrl,
     ...(term.aliases.length
       ? { alternateName: term.aliases }
       : {}),
@@ -22,13 +26,13 @@ export function generateTermStructuredData(term: TermDTO, url: string) {
   };
 }
 
-export function generateWebSiteStructuredData() {
+export function generateWebSiteStructuredData(siteUrl: string) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Slanguage",
     description:
       "A curated internet slang field guide with definitions, examples, vibe checks, and moderated submissions.",
-    url: "https://slanguage.local",
+    url: siteUrl,
   };
 }

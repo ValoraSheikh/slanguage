@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { getAllTerms, getTermBySlug } from "@/lib/queries";
 import { getStatusLabel } from "@/lib/status";
 import { generateTermStructuredData } from "@/lib/structured-data";
+import { getSiteUrl } from "@/lib/site-url";
 
 export async function generateMetadata({
   params,
@@ -27,13 +28,13 @@ export async function generateMetadata({
     title: `What does "${term.term}" mean? | Slanguage`,
     description: `${term.term} meaning: ${term.shortDefinition}. Read the full definition, examples, and vibe check on Slanguage.`,
     alternates: {
-      canonical: `https://slanguage.local/terms/${term.slug}`,
+      canonical: `${getSiteUrl()}/terms/${term.slug}`,
     },
     openGraph: {
       title: `What does "${term.term}" mean? | Slanguage`,
       description: term.shortDefinition,
       type: "article",
-      url: `https://slanguage.local/terms/${term.slug}`,
+      url: `${getSiteUrl()}/terms/${term.slug}`,
     },
     twitter: {
       card: "summary",
@@ -77,7 +78,8 @@ export default async function TermDetailPage({
           __html: JSON.stringify(
             generateTermStructuredData(
               term,
-              `https://slanguage.local/terms/${term.slug}`,
+              `${getSiteUrl()}/terms/${term.slug}`,
+              getSiteUrl(),
             ),
           ),
         }}

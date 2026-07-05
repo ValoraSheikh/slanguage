@@ -7,6 +7,7 @@ import { EmptyState } from "@/components/empty-state";
 import { TermCard } from "@/components/term-card";
 import { Button } from "@/components/ui/button";
 import { getCategoryWithTerms } from "@/lib/queries";
+import { getSiteUrl } from "@/lib/site-url";
 import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
@@ -23,12 +24,12 @@ export async function generateMetadata({
     title: `${data.category.name} Slang | Slanguage`,
     description: `${data.category.name}: ${data.category.description} Browse ${data.category.count} slang terms curated on Slanguage.`,
     alternates: {
-      canonical: `https://slanguage.local/categories/${slug}`,
+      canonical: `${getSiteUrl()}/categories/${slug}`,
     },
     openGraph: {
       title: `${data.category.name} Slang | Slanguage`,
       description: data.category.description,
-      url: `https://slanguage.local/categories/${slug}`,
+      url: `${getSiteUrl()}/categories/${slug}`,
     },
   };
 }

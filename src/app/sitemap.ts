@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { getAllTerms } from "@/lib/queries";
 import { categories } from "@/data/categories";
+import { getSiteUrl } from "@/lib/site-url";
 
-const BASE_URL = "https://slanguage.local";
+const BASE_URL = getSiteUrl();
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const terms = await getAllTerms();
