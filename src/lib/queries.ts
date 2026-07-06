@@ -30,8 +30,7 @@ function serializeCategory(category: any): CategoryDTO {
     name: category.name,
     slug: category.slug,
     description: category.description,
-    emoji: category.emoji,
-    color: category.color,
+    iconName: category.iconName,
   };
 }
 
@@ -61,18 +60,12 @@ function serializeTerm(term: any): TermDTO {
     id: toPlainId(term._id),
     term: term.term,
     slug: term.slug,
-    aliases: term.aliases ?? [],
     shortDefinition: term.shortDefinition,
     definition: term.definition,
     examples: term.examples ?? [],
     categories: populatedCategories.map(serializeCategory),
     categorySlugs: populatedCategories.map((category: any) => category.slug),
-    tags: term.tags ?? [],
     status: term.status,
-    safetyLabel: term.safetyLabel,
-    usageNotes: term.usageNotes,
-    caution: term.caution,
-    origin: term.origin,
     relatedTerms,
     approvedAt: term.approvedAt?.toISOString?.(),
     lastReviewedAt: term.lastReviewedAt?.toISOString?.(),
@@ -187,8 +180,6 @@ export async function searchTerms(query: string, limit = 20) {
       $or: [
         { term: regex },
         { slug: regex },
-        { aliases: regex },
-        { tags: regex },
         { shortDefinition: regex },
         { definition: regex },
         ...(categoryIds.length ? [{ categories: { $in: categoryIds } }] : []),
@@ -223,8 +214,6 @@ function searchStarterTerms(query: string, limit: number) {
         term.slug,
         term.shortDefinition,
         term.definition,
-        ...term.aliases,
-        ...term.tags,
         ...term.categorySlugs,
       ]
         .join(" ")

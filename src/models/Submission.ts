@@ -6,13 +6,6 @@ const SubmissionSchema = new Schema(
     suggestedDefinition: { type: String, required: true },
     suggestedExamples: [{ type: String }],
     suggestedCategorySlug: { type: String, required: true, index: true },
-    suggestedTags: [{ type: String, trim: true }],
-    suggestedStatus: {
-      type: String,
-      enum: ["current", "peaking", "fading", "dated", "ironic"],
-    },
-    sourceContext: String,
-    notes: String,
     status: {
       type: String,
       enum: ["pending", "approved", "rejected", "duplicate"],

@@ -13,13 +13,10 @@ export function generateTermStructuredData(
     termCode: term.slug,
     inDefinedTermSet: {
       "@type": "DefinedTermSet",
-      name: "Slanguage — Gen Z Slang Field Guide",
+      name: "Slanguage",
       url: siteUrl,
     },
     url: termUrl,
-    ...(term.aliases.length
-      ? { alternateName: term.aliases }
-      : {}),
     ...(term.categorySlugs.length
       ? { about: term.categorySlugs.map((s) => ({ "@type": "Thing", name: s })) }
       : {}),
@@ -32,7 +29,7 @@ export function generateWebSiteStructuredData(siteUrl: string) {
     "@type": "WebSite",
     name: "Slanguage",
     description:
-      "A curated internet slang field guide with definitions, examples, vibe checks, and moderated submissions.",
+      "A curated reference for internet slang with definitions, examples, and moderated submissions.",
     url: siteUrl,
   };
 }

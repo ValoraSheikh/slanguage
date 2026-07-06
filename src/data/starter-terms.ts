@@ -1999,10 +1999,14 @@ export function starterTermToDTO(term: StarterTerm): TermDTO {
     .filter(Boolean) as CategoryDTO[];
 
   return {
-    ...term,
-    aliases: term.aliases ?? [],
+    term: term.term,
+    slug: term.slug,
+    shortDefinition: term.shortDefinition,
+    definition: term.definition,
+    examples: term.examples,
     categories: mappedCategories,
     categorySlugs: term.categorySlugs,
+    status: term.status,
     relatedTerms: (term.relatedSlugs ?? [])
       .map((slug) => starterTerms.find((related) => related.slug === slug))
       .filter(Boolean)

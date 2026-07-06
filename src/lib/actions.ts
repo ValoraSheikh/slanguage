@@ -14,7 +14,7 @@ import { slugify } from "@/lib/slugify";
 import { Category } from "@/models/Category";
 import { Submission } from "@/models/Submission";
 import { Term } from "@/models/Term";
-import type { SafetyLabel, TermStatus } from "@/types/slang";
+import type { TermStatus } from "@/types/slang";
 
 function getString(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
@@ -27,13 +27,6 @@ function splitLines(value: string) {
     .filter(Boolean);
 }
 
-function splitTags(value: string) {
-  return value
-    .split(",")
-    .map((item) => item.trim().toLowerCase())
-    .filter(Boolean);
-}
-
 async function ensureCategory(slug: string) {
   const fallback =
     categories.find((category) => category.slug === slug) ?? categories[0];
@@ -43,8 +36,7 @@ async function ensureCategory(slug: string) {
       name: fallback.name,
       slug: fallback.slug,
       description: fallback.description,
-      emoji: fallback.emoji,
-      color: fallback.color,
+      iconName: fallback.iconName,
     },
     { upsert: true, new: true },
   );
@@ -66,10 +58,6 @@ export async function createSubmissionAction(formData: FormData) {
       suggestedDefinition,
       suggestedExamples: splitLines(getString(formData, "suggestedExamples")),
       suggestedCategorySlug,
-      suggestedTags: splitTags(getString(formData, "suggestedTags")),
-      suggestedStatus: getString(formData, "suggestedStatus") || undefined,
-      sourceContext: getString(formData, "sourceContext") || undefined,
-      notes: getString(formData, "notes") || undefined,
       status: "pending",
     });
   } catch (error) {
@@ -109,8 +97,6 @@ export async function approveSubmissionAction(formData: FormData) {
   const definition = getString(formData, "definition");
   const categorySlug = getString(formData, "categorySlug");
   const status = (getString(formData, "status") || "current") as TermStatus;
-  const safetyLabel = (getString(formData, "safetyLabel") ||
-    "clean") as SafetyLabel;
 
   if (
     !submissionId ||
@@ -130,17 +116,11 @@ export async function approveSubmissionAction(formData: FormData) {
     {
       term,
       slug,
-      aliases: splitTags(getString(formData, "aliases")),
       shortDefinition,
       definition,
       examples: splitLines(getString(formData, "examples")),
       categories: [category._id],
-      tags: splitTags(getString(formData, "tags")),
       status,
-      safetyLabel,
-      usageNotes: getString(formData, "usageNotes") || undefined,
-      caution: getString(formData, "caution") || undefined,
-      origin: getString(formData, "origin") || undefined,
       isPublished: true,
       approvedAt: new Date(),
       lastReviewedAt: new Date(),
