@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, LucideIcon } from "lucide-react";
 
 import { EmptyState } from "@/components/empty-state";
-import { TermCard } from "@/components/term-card";
-import { Button } from "@/components/ui/button";
+import { TermRow } from "@/components/term-card";
 import { getCategoryWithTerms } from "@/lib/queries";
+import { getCategoryIcon } from "@/lib/icons";
 import { getSiteUrl } from "@/lib/site-url";
-import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
   params,
@@ -21,13 +20,13 @@ export async function generateMetadata({
   if (!data) return { title: "Category not found" };
 
   return {
-    title: `${data.category.name} Slang | Slanguage`,
-    description: `${data.category.name}: ${data.category.description} Browse ${data.category.count} slang terms curated on Slanguage.`,
+    title: `${data.category.name} | Slanguage`,
+    description: data.category.description,
     alternates: {
       canonical: `${getSiteUrl()}/categories/${slug}`,
     },
     openGraph: {
-      title: `${data.category.name} Slang | Slanguage`,
+      title: `${data.category.name} | Slanguage`,
       description: data.category.description,
       url: `${getSiteUrl()}/categories/${slug}`,
     },
@@ -45,46 +44,35 @@ export default async function CategoryDetailPage({
 
   const { category, terms } = data;
   const sorted = [...terms].sort((a, b) => a.term.localeCompare(b.term));
+  const Icon: LucideIcon = getCategoryIcon(category.iconName);
 
   return (
-    <div className="container py-10">
-      <Button asChild variant="outline" className="mb-7">
-        <Link href="/categories">
-          <ArrowLeft className="h-4 w-4" /> Back to categories
-        </Link>
-      </Button>
+    <div className="container max-w-3xl py-10 space-y-6">
+      <Link
+        href="/categories"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-3 w-3" /> Categories
+      </Link>
 
-      <header className="rounded-2xl border bg-card p-6 shadow-sm md:p-8">
-        <div
-          className={cn(
-            "mb-6 flex h-16 w-16 items-center justify-center rounded-xl text-4xl",
-            category.color,
-          )}
-        >
-          {category.emoji}
-        </div>
-        <p className="inline-flex rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground mb-4">
-          {category.count} entries
-        </p>
-        <h1 className="text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
+      <div className="flex items-center gap-2">
+        <Icon className="h-5 w-5 text-muted-foreground" />
+        <h1 className="text-2xl font-semibold tracking-tight">
           {category.name}
         </h1>
-        <p className="mt-4 max-w-3xl text-lg leading-relaxed text-muted-foreground">
-          {category.description}
-        </p>
-      </header>
+      </div>
 
-      <section className="mt-10">
-        {sorted.length ? (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {sorted.map((term) => (
-              <TermCard key={term.slug} term={term} />
-            ))}
-          </div>
-        ) : (
-          <EmptyState />
-        )}
-      </section>
+      <p className="text-xs text-muted-foreground">{sorted.length} entries</p>
+
+      {sorted.length ? (
+        <div className="divide-y">
+          {sorted.map((term) => (
+            <TermRow key={term.slug} term={term} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState />
+      )}
     </div>
   );
 }
