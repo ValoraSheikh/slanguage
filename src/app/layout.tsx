@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     template: "%s | Slanguage",
   },
   description:
-    "A curated internet slang field guide with definitions, examples, vibe checks, and moderated submissions.",
+    "A curated reference for internet slang with definitions, examples, and moderated submissions.",
   keywords: [
     "Gen Z slang",
     "internet slang",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Slanguage",
     description:
-      "Decode Gen Z slang, brainrot, and internet lingo without sounding like a brand account.",
+      "A curated reference for internet slang with definitions, examples, and moderated submissions.",
     type: "website",
     url: siteUrl,
     images: [
@@ -54,9 +54,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Slanguage — Gen Z Slang Field Guide",
+    title: "Slanguage",
     description:
-      "Decode Gen Z slang, brainrot, and internet lingo without sounding like a brand account.",
+      "A curated reference for internet slang with definitions, examples, and moderated submissions.",
     images: [`${siteUrl}/api/og`],
   },
 };

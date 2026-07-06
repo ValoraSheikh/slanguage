@@ -24,8 +24,8 @@ export async function GET(request: Request) {
               fontFamily: "Geist",
             }}
           >
-            <div style={{ fontSize: 32, color: "hsl(240 3.8% 46.1%)" }}>
-              Slang term not found
+            <div style={{ fontSize: 32, color: "hsl(0 0% 45%)" }}>
+              Term not found
             </div>
           </div>
         ),
@@ -58,24 +58,9 @@ export async function GET(request: Request) {
           >
             <div
               style={{
-                height: 48,
-                width: 48,
-                borderRadius: 12,
-                background: "hsl(170 65% 42% / 0.1)",
-                color: "hsl(170 65% 42%)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 24,
-              }}
-            >
-              S
-            </div>
-            <div
-              style={{
                 fontSize: 24,
                 fontWeight: 500,
-                color: "hsl(170 65% 42%)",
+                color: "hsl(0 0% 9%)",
               }}
             >
               Slanguage
@@ -85,8 +70,8 @@ export async function GET(request: Request) {
           <div
             style={{
               fontSize: 72,
-              fontWeight: 700,
-              color: "hsl(240 10% 3.9%)",
+              fontWeight: 600,
+              color: "hsl(0 0% 9%)",
               letterSpacing: "-0.02em",
               lineHeight: 1.1,
             }}
@@ -97,7 +82,7 @@ export async function GET(request: Request) {
           <div
             style={{
               fontSize: 28,
-              color: "hsl(240 3.8% 46.1%)",
+              color: "hsl(0 0% 45%)",
               lineHeight: 1.5,
               maxWidth: "90%",
             }}
@@ -114,11 +99,10 @@ export async function GET(request: Request) {
           >
             <div
               style={{
-                borderRadius: 9999,
-                border: "1px solid hsl(240 5.9% 90%)",
+                border: "1px solid hsl(0 0% 90%)",
                 padding: "8px 20px",
                 fontSize: 18,
-                color: "hsl(240 3.8% 46.1%)",
+                color: "hsl(0 0% 45%)",
               }}
             >
               {term.status}
@@ -127,11 +111,10 @@ export async function GET(request: Request) {
               <div
                 key={cat}
                 style={{
-                  borderRadius: 9999,
-                  border: "1px solid hsl(240 5.9% 90%)",
+                  border: "1px solid hsl(0 0% 90%)",
                   padding: "8px 20px",
                   fontSize: 18,
-                  color: "hsl(240 3.8% 46.1%)",
+                  color: "hsl(0 0% 45%)",
                 }}
               >
                 {cat}
@@ -161,60 +144,36 @@ export async function GET(request: Request) {
       >
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 16,
+            fontSize: 24,
+            fontWeight: 600,
+            color: "hsl(0 0% 9%)",
             marginBottom: 12,
           }}
         >
-          <div
-            style={{
-              height: 56,
-              width: 56,
-              borderRadius: 14,
-              background: "hsl(170 65% 42% / 0.1)",
-              color: "hsl(170 65% 42%)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 28,
-            }}
-          >
-            S
-          </div>
-          <div
-            style={{
-              fontSize: 32,
-              fontWeight: 600,
-              color: "hsl(170 65% 42%)",
-            }}
-          >
-            Slanguage
-          </div>
+          Slanguage
         </div>
 
         <div
           style={{
             fontSize: 64,
-            fontWeight: 700,
-            color: "hsl(240 10% 3.9%)",
+            fontWeight: 600,
+            color: "hsl(0 0% 9%)",
             letterSpacing: "-0.02em",
             lineHeight: 1.1,
           }}
         >
-          Decode internet slang without the brand-account cringe.
+          Internet slang, decoded.
         </div>
 
         <div
           style={{
             fontSize: 28,
-            color: "hsl(240 3.8% 46.1%)",
+            color: "hsl(0 0% 45%)",
             lineHeight: 1.5,
             maxWidth: "80%",
           }}
         >
-          {starterTermDTOs.length} curated terms · Definitions, examples, vibe
-          checks · Moderated submissions
+          {starterTermDTOs.length} curated terms · Definitions, examples, moderated submissions
         </div>
 
         <div
@@ -228,11 +187,10 @@ export async function GET(request: Request) {
             <div
               key={vibe}
               style={{
-                borderRadius: 9999,
-                border: "1px solid hsl(240 5.9% 90%)",
+                border: "1px solid hsl(0 0% 90%)",
                 padding: "8px 24px",
                 fontSize: 20,
-                color: "hsl(240 3.8% 46.1%)",
+                color: "hsl(0 0% 45%)",
               }}
             >
               {vibe}
