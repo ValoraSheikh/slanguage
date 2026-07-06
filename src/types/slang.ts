@@ -1,7 +1,5 @@
 export type TermStatus = "current" | "peaking" | "fading" | "dated" | "ironic";
 
-export type SafetyLabel = "clean" | "mild" | "rude" | "sensitive";
-
 export type SubmissionStatus = "pending" | "approved" | "rejected" | "duplicate";
 
 export type CategoryDTO = {
@@ -9,8 +7,7 @@ export type CategoryDTO = {
   name: string;
   slug: string;
   description: string;
-  emoji: string;
-  color: string;
+  iconName: string;
 };
 
 export type StarterTerm = {
@@ -21,9 +18,9 @@ export type StarterTerm = {
   definition: string;
   examples: string[];
   categorySlugs: string[];
-  tags: string[];
+  tags?: string[];
   status: TermStatus;
-  safetyLabel: SafetyLabel;
+  safetyLabel?: string;
   usageNotes?: string;
   caution?: string;
   origin?: string;
@@ -34,18 +31,12 @@ export type TermDTO = {
   id?: string;
   term: string;
   slug: string;
-  aliases: string[];
   shortDefinition: string;
   definition: string;
   examples: string[];
   categories: CategoryDTO[];
   categorySlugs: string[];
-  tags: string[];
   status: TermStatus;
-  safetyLabel: SafetyLabel;
-  usageNotes?: string;
-  caution?: string;
-  origin?: string;
   relatedTerms: Pick<TermDTO, "term" | "slug" | "shortDefinition" | "status">[];
   approvedAt?: string;
   lastReviewedAt?: string;
@@ -59,10 +50,6 @@ export type SubmissionDTO = {
   suggestedDefinition: string;
   suggestedExamples: string[];
   suggestedCategorySlug: string;
-  suggestedTags: string[];
-  suggestedStatus?: TermStatus;
-  sourceContext?: string;
-  notes?: string;
   status: SubmissionStatus;
   reviewedAt?: string;
   reviewerNotes?: string;

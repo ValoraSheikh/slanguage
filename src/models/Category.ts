@@ -5,8 +5,7 @@ const CategorySchema = new Schema(
     name: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, index: true },
     description: { type: String, required: true },
-    emoji: { type: String, required: true },
-    color: { type: String, required: true },
+    iconName: { type: String, required: true },
   },
   { timestamps: true },
 );
