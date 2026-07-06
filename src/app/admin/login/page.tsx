@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { LockKeyhole } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginAction } from "@/lib/actions";
@@ -22,37 +19,33 @@ export default async function AdminLoginPage({
   if (await isAdminAuthenticated()) redirect("/admin/submissions");
 
   return (
-    <div className="container flex min-h-[70vh] items-center justify-center py-12">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-muted">
-            <LockKeyhole className="h-6 w-6 text-muted-foreground" />
-          </div>
-          <CardTitle className="text-2xl">Admin login</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {resolvedSearchParams?.error ? (
-            <div className="mb-5 rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm font-medium text-destructive">
-              Wrong password, or ADMIN_PASSWORD is not configured.
-            </div>
-          ) : null}
-          <form action={loginAction} className="space-y-4">
-            <div className="grid gap-2">
-              <Label htmlFor="password">Admin password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-            <Button type="submit" className="w-full">
-              Enter moderation queue
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+    <div className="container max-w-md py-16">
+      <h1 className="text-2xl font-semibold tracking-tight">Admin login</h1>
+
+      {resolvedSearchParams?.error ? (
+        <p className="mt-4 text-sm text-destructive">
+          Wrong password, or ADMIN_PASSWORD is not configured.
+        </p>
+      ) : null}
+
+      <form action={loginAction} className="mt-6 space-y-4">
+        <div className="grid gap-2">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          className="inline-flex w-full items-center justify-center bg-foreground px-4 py-2 text-sm font-medium text-background hover:bg-foreground/90 transition-colors"
+        >
+          Enter
+        </button>
+      </form>
     </div>
   );
 }
